@@ -25,7 +25,7 @@ banner = """
 
 
 
-all_tools = ['python2','john', 'hydra', 'net-tools', 'wireshark', 'searchsploit', 'metasploit-framework', 'nmap', 'gobuster', 'dirsearch', 'ffuf', 'steghide', 'hash-identifier', 'fcrackzip', 'sqlmap', 'binwalk', 'wpscan', 'whois', 'crackmapexec', 'wafw00f', 'python3-impacket', 'impacket-scripts', 'python2', 'hashid', 'git', 'ghidra', 'gdb', 'freerdp2-dev', 'enum4linux', 'jadx', 'joomscan', 'kerberoast', 'linux-exploit-suggester', 'mongo-tools', 'default-libmysqlclient-dev', 'openssh-client', 'openvpn', 'p7zip', 'pdfcrack', 'libapache2-mod-php', 'python3-pip', 'rdesktop', 'sqlitebrowser', 'tcpdump','hashid']
+all_tools = ['python2','hashcat','john', 'hydra', 'net-tools', 'wireshark', 'searchsploit', 'metasploit-framework', 'nmap', 'gobuster', 'dirsearch', 'ffuf', 'steghide', 'hash-identifier', 'fcrackzip', 'sqlmap', 'binwalk', 'wpscan', 'whois', 'crackmapexec', 'wafw00f', 'python3-impacket', 'impacket-scripts', 'python2', 'hashid', 'git', 'ghidra', 'gdb', 'freerdp2-dev', 'enum4linux', 'jadx', 'joomscan', 'kerberoast', 'linux-exploit-suggester', 'mongo-tools', 'default-libmysqlclient-dev', 'openssh-client', 'openvpn', 'p7zip', 'pdfcrack', 'libapache2-mod-php', 'python3-pip', 'rdesktop', 'sqlitebrowser', 'tcpdump','hashid']
 snap_tools = ['searchsploit']
 awaiting_install = []
 
@@ -65,16 +65,34 @@ def install_tools():
     remaining_tools = [b for b in awaiting_install if b not in uniq_val]
 
     for i in remaining_tools:
-        print(f"Installing {i} ...")
+        print(" ")
+        print(colored(f"Installing {i} ...","red"))
+        print(" ")
         os.system(f"sudo apt install {i} -y")
         os.system("sleep 2")
-    print("Finishing up the installation process...")
+        print(" ")
+    print(colored("Finishing up the installation process...","green"))
     os.system("sleep 3 |echo '...' ")
+    print(" ")
     print("And Done! :)")
+    
 
 def create_banner(banner):
     colored_banner = colored(banner,"green",attrs=["bold"])
     print(colored_banner)
+   
+def upgrade_tools():
+   want_up = input(colored("Would you like to upgrade your system's tools? (y/n)","red",attrs=["bold"]))
+   if want_up == "y":
+       os.system("sleep 1.5")
+       print(" ")
+       print(colored("Upating is in progress. This might take a while... :)","green"))
+       print(" ")
+       os.system("sudo apt upgrade -y")
+   else:
+       print(colored("Exiting the tool installer...","red",attrs=["bold"]))
+       os.system("sleep 1")
+       exit()
 
 
 def main():
@@ -91,7 +109,8 @@ def main():
         print(" ")
         pass
     else:
-        print("Updating the system ...")
+        print(" ")
+        print(colored("Updating the system ...","green",attrs=["bold"]))
         os.system("sleep 2")
         os.system("sudo apt-get update -y")
         print(colored("Updating complete!","green",attrs=["bold"]))
@@ -101,7 +120,9 @@ def main():
         print(" ")
         pass
     else:
-        print("Installing snap ...")
+        print(" ")
+        print(colored("Installing snap ...","red",attrs=["bold"]))
+        print(" ")
         os.system("sleep 2")
         os.system("sudo apt install snapd -y")
         print(colored("Snap has been installed :)","green",attrs=["bold"]))
@@ -113,18 +134,21 @@ def main():
         install_choice = input(colored("Would you like to install the missing tools? (y/n)","green",attrs=["bold"]))
         if install_choice == "y":
             install_tools()
+            upgrade_tools()
         else:
             print(colored("Exiting the tool installer...","red",attrs=["bold"]))
             os.system("sleep 2")
             os.system("exit")
+            
     else:
         print(colored("Exiting the tool installer...","red",attrs=["bold"]))
         os.system("sleep 1")
         os.system("exit")
 
+
+# Error Handling....
 try:
     main()
 except KeyboardInterrupt:
     print(" ")
     print(colored("\nLeaving program. Goodbye :)","blue"))
-   
